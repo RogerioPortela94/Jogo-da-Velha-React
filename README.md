@@ -23,4 +23,4 @@
 
 ## Screenshot 
 
-<img src="https://github.com/RogerioPortela94/Jogo-da-Velha-React/blob/main/Screenshot/image.png?raw=true">
+<img src="https://github.com/RogerioPortela94/Jogo-da-Velha-React/blob/4a2afd796a8cf4ab02acfa9393df257a11df3631/Screenshot/imagem.png">
