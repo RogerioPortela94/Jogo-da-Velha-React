@@ -1,75 +1,81 @@
-import { useState } from "react";
+import React, { useState } from 'react';
+import { makeAIMove, calculateWinner } from './gameUtils'; // Importando as funções
 
-
-export default function Board() {
+function Board({ modo }) {
     const [xIsNext, setXIsNext] = useState(true);
-    const [squares, setSquares] = useState(Array(9).fill(null));
-    const winner = calculaterWinner(squares);
+    const [squares, setSquares] = useState(Array(9).fill(""));
+    const winner = calculateWinner(squares);
     let status;
 
-    function handleClick(i){
-        if(squares[i] || calculaterWinner(squares)){
+    const handleClick = (i) => {
+        console.log("Usuario clicou");
+        console.log("o modo é: "+modo);
+        if (squares[i] || calculateWinner(squares)) {
             return;
         }
-        const nextSquares = squares.slice();
-        if(xIsNext){
-            nextSquares[i] = "X";
-        }else{
-            nextSquares[i] = "O";
+        const newSquares = squares.slice();
+        if(modo === "pvm"){
+            console.log("Entrou no modo PVM");
+            // Se for o modo Player vs Máquina e for a vez da máquina
+            if(!xIsNext){
+                vezDaIa();
+            }else{
+                newSquares[i] = 'X'; // Jogador humano sempre joga como X
+                setSquares(newSquares);
+                setXIsNext(false);
+                vezDaIa(newSquares);
+            } 
+        }else {
+            console.log("entrou no modo PVP");
+            newSquares[i] =  xIsNext ? 'X' : 'O' ;
+            setSquares(newSquares);
+            setXIsNext(!xIsNext);
         }
-        setSquares(nextSquares);
-        setXIsNext(!xIsNext);
+    };
+    
+    
+
+    
+   
+    
+    function vezDaIa(newSquares){
+        console.log("É a vez da maquina");
+        const aiMove = makeAIMove(newSquares);
+        if (aiMove !== null) {
+            console.log("movimento da Ia: "+aiMove);
+            newSquares[aiMove] = 'O'; // Máquina sempre joga como O
+            setSquares(newSquares);
+            setXIsNext(true); // Passa a vez de volta para o jogador humano
+        }
     }
+   
+
 
     if(winner){
-        status = "Winner: "+winner;
+            status = "Vencedor: "+winner;
     }else{
-        status = "Next player: "+ (xIsNext ? "X":"O");
-    }
-
-    return (
-        <>
-            <div className="status">{status}</div>
-            <div className="board-row">
-                <Square value={squares[0]} onSquareClick={() => handleClick(0)}/>
-                <Square value={squares[1]} onSquareClick={() => handleClick(1)}/>
-                <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
-            </div>
-            <div className="board-row">
-                <Square value={squares[3]} onSquareClick={() => handleClick(3)}/>
-                <Square value={squares[4]} onSquareClick={() => handleClick(4)}/>
-                <Square value={squares[5]} onSquareClick={() => handleClick(5)}/>
-            </div>
-            <div className="board-row">
-                <Square value={squares[6]} onSquareClick={() => handleClick(6)}/>
-                <Square value={squares[7]} onSquareClick={() => handleClick(7)}/>
-                <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
-            </div>
-        </>
-    ) 
-
-}
-
-function Square({value, onSquareClick}){
-    return <button className="square" onClick={onSquareClick}>{value}</button>;
-}
-
-function calculaterWinner(squares){
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-    for(let i = 0; i < lines.length; i++){
-        const [a, b, c] = lines[i];
-        if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
-            return squares[a];
+        if(modo === 'pvp'){
+            status = 'Próximo jogador:'+ (xIsNext ? 'X' : 'O'); 
+        }else{
+            status = 'Próximo jogador:'+ (xIsNext ? 'X (Você)' : 'O (Máquina)');
         }
     }
-    return null;
+  
+
+    return (
+        <div>
+        <div>{status}</div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh' }}>
+                <div className="board">
+                    {squares.map((cell, i) => (
+                    <button key={i} onClick={() => handleClick(i)}>
+                        {cell}
+                    </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
 }
+
+export default Board;
