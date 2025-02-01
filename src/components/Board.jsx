@@ -8,14 +8,11 @@ function Board({ modo }) {
     let status;
 
     const handleClick = (i) => {
-        console.log("Usuario clicou");
-        console.log("o modo é: "+modo);
         if (squares[i] || calculateWinner(squares)) {
             return;
         }
         const newSquares = squares.slice();
         if(modo === "pvm"){
-            console.log("Entrou no modo PVM");
             // Se for o modo Player vs Máquina e for a vez da máquina
             if(!xIsNext){
                 vezDaIa();
@@ -26,7 +23,6 @@ function Board({ modo }) {
                 vezDaIa(newSquares);
             } 
         }else {
-            console.log("entrou no modo PVP");
             newSquares[i] =  xIsNext ? 'X' : 'O' ;
             setSquares(newSquares);
             setXIsNext(!xIsNext);
@@ -39,10 +35,8 @@ function Board({ modo }) {
    
     
     function vezDaIa(newSquares){
-        console.log("É a vez da maquina");
         const aiMove = makeAIMove(newSquares);
         if (aiMove !== null) {
-            console.log("movimento da Ia: "+aiMove);
             newSquares[aiMove] = 'O'; // Máquina sempre joga como O
             setSquares(newSquares);
             setXIsNext(true); // Passa a vez de volta para o jogador humano

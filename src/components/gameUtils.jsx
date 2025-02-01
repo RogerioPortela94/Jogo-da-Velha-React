@@ -1,17 +1,14 @@
 // Função para a máquina fazer uma jogada
 export function makeAIMove(squares) {
-    console.log("chamou a função!");
     const availableMoves = [];
     squares.forEach((cell, index) => {
       if (!cell) {
-        console.log("Avaliando casas vazias para jogar: "+index);
         availableMoves.push(index);
       }
     });
   
     if (availableMoves.length > 0) {
       const randomIndex = Math.floor(Math.random() * availableMoves.length);
-      console.log("Numero para jogar: "+randomIndex);
       return availableMoves[randomIndex];
     }
   
