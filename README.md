@@ -1,5 +1,8 @@
 # Jogo da Velha React + Vite V2
 - Projeto para entender fundamentos do React
+<a href="https://tictactoe-react-rp94.netlify.app/">Jogue Aqui</a>
+
+
 
 ## V1:
 - Fundamentos inicias do jogo
@@ -18,4 +21,6 @@
 - Implementar <a href="https://getbootstrap.com/">Bootstrap</a> ao estilo
 
 
+## Screenshot 
 
+<img src="https://github.com/RogerioPortela94/Jogo-da-Velha-React/blob/main/Screenshot/image.png?raw=true">
